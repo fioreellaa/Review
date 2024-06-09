@@ -1,0 +1,179 @@
+  <!DOCTYPE html>
+  <html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Menu</title>
+      <script src="https://kit.fontawesome.com/8ff637b780.js" crossorigin="anonymous"></script>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+	  <link rel="stylesheet" th:href="@{/css/menu.css}">
+	  
+	  <!-- JS -->  
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+  <body>
+	<header class="main-header">
+	  <label for="btn-nav" class="btn-nav"><i class="fas fa-bars" style="color: #fff"></i></label>
+	  <input type="checkbox" id="btn-nav">
+	  
+	  <nav>
+		<h2>DATA REVIEW</h2>
+	    <ul class="navigation">
+	      <li><a href="/user/menu-admin/list">Usuarios</a></li>
+	      <li><a href="">Logs API</a></li>
+	      <li><a href="">Subir imagenes</a></li>
+	      <li><a href="/user/menu-admin/log-review">Logs Review</a></li>
+	    </ul>
+	  </nav>
+	  
+	</header>
+	<div class="container">
+		<h2>Gestión de usuarios</h2>
+		
+		<div class="user-boton">
+			<button type="button" class="ubton">Agregar usuario</button>
+		</div>
+		<div class="users-table">
+			<table class="table caption-top">
+			  
+			  <thead>
+			    <tr>
+					<th></th>
+			      <th scope="col">NOMBRE</th>
+			      <th scope="col">EMAIL</th>
+			      <th scope="col">USUARIO</th>
+			      <th scope="col">ROL</th>
+			      <th scope="col">FECHA CREACIÓN</th>
+			      <th scope="col">EDITAR</th>
+			      <th scope="col">ELIMINAR</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr th:each="u: ${userlist}" class="tr-table">
+				  <td><input type="hidden" name="idUsuario" class="idUsuario" th:value="${u.Id}"></td>
+			      <td scope="row" th:text="${u.fullname}"></td>
+			      <td th:text="${u.usermail}"></td>
+			      <td th:text="${u.username}"></td>
+			      <td >
+					<span th:each="role, iterStat : ${u.roles}">
+			            <span th:text="${role.rolename}"></span>
+			            <span th:unless="${iterStat.last}">, </span>
+			        </span>
+			      </td>
+			      <td th:text="${u.fechacreacion}"></td>
+			      <td><i class="far fa-pen-to-square updateUsuario" style="color: #000000;"></i></td>
+			      <td><i class="far fa-trash-can" style="color: #000000;"></i></td>
+			    </tr>
+			    
+			  </tbody>
+			</table>
+		</div>
+		
+		<!-- MODAL AGREGAR USUARIO -->
+		<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-lg modal-dialog-centered">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title mx-auto" id="exampleModalLabel" >AGREGAR USUARIO</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <form th:action="@{/user/menu-admin/register}" method="POST">
+					<div class="form-group">
+						<label>Rol</label>
+						<select name="rol">
+							<option class="rol" value="ROLE_ADMIN">ADMINISTRADOR</option>
+							<option class="rol" value="ROLE_USER">USUARIO</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>Nombres y apellidos</label>
+						<input type="text" class="fullname" name="fullname">
+					</div>
+					<div class="form-group">
+						<label>Username</label>
+						<input type="text" class="username" name="username">
+					</div>
+					<div class="form-group">
+						<label>Email</label>
+						<input type="email" class="usermail" name="usermail">
+					</div>
+					<div class="form-group">
+						<label>Contraseña</label>
+						<div class="password-container">
+					        <input type="password" class="userpassword" id="userpassword" name="userpassword">
+					        <span class="toggle-password">
+					            <i class="fas fa-eye"></i>
+					        </span>
+					    </div>
+					</div>
+					<center>
+					<input class="btn-submit" type="submit" value="Agregar">
+					</center>
+				</form>
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- FIN MODAL -->
+		
+		<!-- MODAL EDITAR USUARIO -->
+		<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-lg modal-dialog-centered">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title mx-auto" id="exampleModalLabel" >EDITAR USUARIO</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <form th:action="@{/user/menu-admin/update}" method="POST">
+					<div class="form-group">
+						<label>Rol</label>
+						<select name="rol">
+							<option class="rol" value="ROLE_ADMIN">ADMINISTRADOR</option>
+							<option class="rol" value="ROLE_USER">USUARIO</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>Nombres y apellidos</label>
+						<input type="text" class="fullname" id="fullname" name="fullname">
+					</div>
+					<div class="form-group">
+						<label>Username</label>
+						<input type="text" class="username" id="username" name="username" >
+					</div>
+					<div class="form-group">
+						<label>Email</label>
+						<input type="email" class="usermail" id="usermail" name="usermail" >
+					</div>
+					<div class="form-group">
+						<label>Contraseña</label>
+						<div class="password-container">
+					        <input type="password" class="userpassword" id="userpassword" name="userpassword">
+					        <span class="toggle-password">
+					            <i class="fas fa-eye"></i>
+					        </span>
+					    </div>
+					</div>
+					<center>
+					<input class="btn-submit" type="submit" value="Guardar cambios">
+					</center>
+				</form>
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- FIN MODAL -->
+	</div>
+	<script th:src="@{/js/menu.js}"></script>
+  </body>
+  
+</html>
+

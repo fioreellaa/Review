@@ -1,0 +1,52 @@
+  <!DOCTYPE html>
+  <html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Login</title>
+      <link rel="stylesheet" th:href="@{/css/loginn.css}">
+  </head>
+  <body style="display:flex; align-items:center; justify-content:center;">
+	  <div class="return">
+		  <a th:href="@{/tourist-places/list}">Volver</a>
+	  </div>
+	  <div class="login-page">
+		  
+	    <div class="form">
+	      <form class="register-form" id="register-form" th:action="@{/user/register}" method="POST" >
+	        <h2>Register</h2>
+	        <input type="text" id="FullNombreUsuario" name="fullname" placeholder="Full Name *" required/>
+	        <input type="text" id="nombreUsuario" name="username" placeholder="Username *" required/>
+	        <input type="email" id="correoUsuarioRegistro" name="usermail" placeholder="Email *" required/>
+	        <input type="password" id="contrasenaUsuarioRegistro" name="userpassword" placeholder="Password *" required/>
+	        <a class="btn" href="#" id="submit-form-reg">
+	          <span></span>
+	          <span></span>
+	          <span></span>
+	          <span></span>
+	          Create
+	        </a><!--<input type="submit" value="Enviar">-->
+	        <p class="message">Already registered? <a href="#">Sign In</a></p>
+	      </form>
+	      <form class="login-form" id="login-form" th:action="@{/user/login}" method="post">
+	        <h2></i> Login</h2>
+	        <input type="text" name="username" placeholder="Username" required />
+	        <input type="password" name="userpassword" placeholder="Password" required/>
+	        <a class="btn" href="#" id="submit-form-log">
+	          <span></span>
+	          <span></span>
+	          <span></span>
+	          <span></span>
+	         Sign in
+	        </a><!--<input type="submit" value="Enviar">-->
+	        <p class="message">Not registered? <a href="#">Create an account</a></p>
+	      </form>
+	    </div>
+	  </div>
+	 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script th:src="@{/js/loginn.js}"></script>
+  </body>
+</html>
+
